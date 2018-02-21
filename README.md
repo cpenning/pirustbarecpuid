@@ -13,7 +13,7 @@ compilation.)
 
 I am assuming a Posix style environment such as linux, OS-X or cygwin on Windows. I used Ubuntu for this.
 
-** Set up the Rust cross-compiler **
+**Set up the Rust cross-compiler**
 
 Install Rust:
 
@@ -35,8 +35,8 @@ If you get an error regarding missing symbols, use `nm` to get the missing symbo
 My build complained about `undefined reference to 'core::panicking::panic::h93f04452fe9c978c'`
 so I tracked it down like this:
 
-`$ arm-none-eabi-nm target/arm-none-eabihf/debug/libpirustbarecpuid.rlib 2>/dev/null  | grep ' U .*panicking.*panic'
-          U _ZN4core9panicking5panic17h93f04452fe9c978cE`
+`$ arm-none-eabi-nm target/arm-none-eabihf/debug/libpirustbarecpuid.rlib 2>/dev/null  | grep ' U .*panicking.*panic'`
+`          U _ZN4core9panicking5panic17h93f04452fe9c978cE`
 
 ## History
 
