@@ -89,15 +89,15 @@ impl Hardware {
         let mut ra: u32;
 
         unsafe {
-            PUT32(self.pbase + Hardware::AUX_ENABLES,1);
-            PUT32(self.pbase + Hardware::AUX_MU_IER_REG,0);
-            PUT32(self.pbase + Hardware::AUX_MU_CNTL_REG,0);
-            PUT32(self.pbase + Hardware::AUX_MU_LCR_REG,3);
-            PUT32(self.pbase + Hardware::AUX_MU_MCR_REG,0);
-            PUT32(self.pbase + Hardware::AUX_MU_IER_REG,0);
-            PUT32(self.pbase + Hardware::AUX_MU_IIR_REG,0xC6);
-            PUT32(self.pbase + Hardware::AUX_MU_BAUD_REG,270);
-            ra = GET32(self.pbase + Hardware::GPFSEL1);
+            PUT32(self.pbase.saturating_add(Hardware::AUX_ENABLES),1);
+            PUT32(self.pbase.saturating_add(Hardware::AUX_MU_IER_REG),0);
+            PUT32(self.pbase.saturating_add(Hardware::AUX_MU_CNTL_REG),0);
+            PUT32(self.pbase.saturating_add(Hardware::AUX_MU_LCR_REG),3);
+            PUT32(self.pbase.saturating_add(Hardware::AUX_MU_MCR_REG),0);
+            PUT32(self.pbase.saturating_add(Hardware::AUX_MU_IER_REG),0);
+            PUT32(self.pbase.saturating_add(Hardware::AUX_MU_IIR_REG),0xC6);
+            PUT32(self.pbase.saturating_add(Hardware::AUX_MU_BAUD_REG),270);
+            ra = GET32(self.pbase.saturating_add(Hardware::GPFSEL1));
         }
 
         ra&=!(7<<12); //gpio14
@@ -106,8 +106,8 @@ impl Hardware {
         ra|=2<<15;    //alt5
 
         unsafe {
-            PUT32(self.pbase + Hardware::GPFSEL1,ra);
-            PUT32(self.pbase + Hardware::AUX_MU_CNTL_REG,3);
+            PUT32(self.pbase.saturating_add(Hardware::GPFSEL1),ra);
+            PUT32(self.pbase.saturating_add(Hardware::AUX_MU_CNTL_REG),3);
         }
     }
 
@@ -132,15 +132,7 @@ pub extern fn notmain() {
         pc = GETPC();
     }
     hw.hexstring(pc);
-    let id: u32;
-    unsafe {
-        id = GETCPUID();
-    }
     hw.hexstring(id);
-    let id: u32;
-    unsafe {
-        id = GETCPUID();
-    }
     match id {
         0x410FB767 => hw.send_string(Hardware::PI1),
         0x410FC075 => hw.send_string(Hardware::PI2),
@@ -151,8 +143,12 @@ pub extern fn notmain() {
 }
 
 // TODO(cpenning) Track down the cause of this!
+//
 // Use nm to get the symbol name
+//
 // $ arm-none-eabi-nm target/arm-none-eabihf/debug/libpirustbarecpuid.rlib 2>/dev/null  | grep ' U .*panicking.*panic'
 //          U _ZN4core9panicking5panic17h93f04452fe9c978cE
+//
+// UPDATE: replacing the + operator with saurating_add does NOT make this go away.
 #[no_mangle]
 pub extern fn _ZN4core9panicking5panic17h93f04452fe9c978cE() -> ! { unsafe { abort() } }
