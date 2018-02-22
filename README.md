@@ -43,5 +43,7 @@ $ arm-none-eabi-nm target/arm-none-eabihf/debug/libpirustbarecpuid.rlib 2>/dev/n
 ## History
 
 Project created 2018/02/20, tested on a PiZero WH and an RPi3.
-`$ rustc --version
-rustc 1.25.0-nightly (bacb5c58d 2018-01-26)`
+```
+$ rustc --version
+rustc 1.25.0-nightly (bacb5c58d 2018-01-26)
+```
