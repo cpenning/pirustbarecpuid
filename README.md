@@ -17,19 +17,34 @@ I am assuming a Posix style environment such as linux, OS-X or cygwin on Windows
 
 Install the arm toolchain (ubuntu version given)
 
-`sudo apt install gcc-arm-none-eabi`
+```
+sudo add-apt-repository ppa:team-gcc-arm-embedded/ppa
+sudo apt update
+sudo apt install gcc-arm-none-eabi
+```
 
 Install Rust:
 
 `curl https://sh.rustup.rs -sSf | sh`
 
+Choose the default when you see the below.
+
+`1) Proceed with installation (default)`
+
 Install xargo (cargo replacement that simplifies cross-compiling.)
 
-`cargo install xargo`
+```
+source $HOME/.cargo/env
+cargo install xargo
+```
 
 In this project directory, tell rust to use the nightly builds.
 
 `rustup override set nightly`
+
+Install `rust-src`
+
+`rustup component add rust-src`
 
 And you should be to run `make` at this point.
 
