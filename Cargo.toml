@@ -5,5 +5,8 @@ authors = ["Craig Pennington <cpenning@milo.org>"]
 
 [dependencies]
 
+[lib]
+crate-type = ["staticlib"]
+
 [profile.dev]
 panic = "abort"

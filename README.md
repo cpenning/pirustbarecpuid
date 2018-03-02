@@ -15,6 +15,10 @@ I am assuming a Posix style environment such as linux, OS-X or cygwin on Windows
 
 **Set up the Rust cross-compiler**
 
+Install the arm toolchain (ubuntu version given)
+
+`sudo apt install gcc-arm-none-eabi`
+
 Install Rust:
 
 `curl https://sh.rustup.rs -sSf | sh`
@@ -28,17 +32,6 @@ In this project directory, tell rust to use the nightly builds.
 `rustup override set nightly`
 
 And you should be to run `make` at this point.
-
-## Ugliness
-
-If you get an error regarding missing symbols, use `nm` to get the missing symbol name.
-My build complained about `undefined reference to 'core::panicking::panic::h93f04452fe9c978c'`
-so I tracked it down like this:
-
-```
-$ arm-none-eabi-nm target/arm-none-eabihf/debug/libpirustbarecpuid.rlib 2>/dev/null  | grep ' U .*panicking.*panic'
-          U _ZN4core9panicking5panic17h93f04452fe9c978cE
-```
 
 ## History
 

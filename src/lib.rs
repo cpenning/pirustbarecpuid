@@ -142,13 +142,6 @@ pub extern fn notmain() {
     hw.hexstring(0x11223344);
 }
 
-// TODO(cpenning) Track down the cause of this!
-//
-// Use nm to get the symbol name
-//
-// $ arm-none-eabi-nm target/arm-none-eabihf/debug/libpirustbarecpuid.rlib 2>/dev/null  | grep ' U .*panicking.*panic'
-//          U _ZN4core9panicking5panic17h93f04452fe9c978cE
-//
-// UPDATE: replacing the + operator with saurating_add does NOT make this go away.
+#[lang = "panic_fmt"]
 #[no_mangle]
-pub extern fn _ZN4core9panicking5panic17h93f04452fe9c978cE() -> ! { unsafe { abort() } }
+pub fn panic_fmt() -> ! { unsafe { abort() } }
